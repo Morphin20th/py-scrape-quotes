@@ -25,7 +25,7 @@ def is_next_page(soup: Tag) -> bool:
 
 
 def write_elements_to_csv(elements: list, path: str, fields: list) -> None:
-    with open(path, "w",newline="",encoding="utf-8") as f:
+    with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(fields)
         writer.writerows([astuple(element) for element in elements])
