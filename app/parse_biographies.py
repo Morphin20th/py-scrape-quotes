@@ -37,9 +37,15 @@ def get_authors_by_page(page_soup: Tag) -> List[Author]:
         PARSED_AUTHORS.add(author)
 
         href = span.select_one("a").get("href")[1:]
-        text = requests.get(f"{BASE_URL}{href}").content
-        author_page_soup = BeautifulSoup(text, "html.parser")
 
+        try:
+            response = requests.get(f"{BASE_URL}{href}")
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"Error {e}")
+            continue
+
+        author_page_soup = BeautifulSoup(response.content, "html.parser")
         authors.append(get_single_author(author_page_soup))
     return authors
 
