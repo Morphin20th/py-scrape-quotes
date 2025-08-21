@@ -28,7 +28,13 @@ def write_elements_to_csv(elements: list, path: str, fields: list) -> None:
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(fields)
-        writer.writerows([astuple(element) for element in elements])
+        for element in elements:
+            row = list(astuple(element))
+
+            if row and isinstance(row[-1], list):
+                row[-1] = ",".join(row[-1]) if row[-1] else ""
+
+            writer.writerow(row)
 
 
 def get_all_items(parse_func: Callable[[BeautifulSoup], list]) -> list:
